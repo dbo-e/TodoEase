@@ -2,7 +2,7 @@
 
 Newest first. Each release is a GitHub release with the Windows installer; todoease.com runs the same version.
 
-## Unreleased
+## 0.2.8 — 2026-11-02
 
 ### Added
 - Home: click the TodoEase logo for a plain page with one card per module: Todo (tasks, projects, calendar, sticky notes)
@@ -33,9 +33,13 @@ Newest first. Each release is a GitHub release with the Windows installer; todoe
 - Black hole background (Shop, Legendary): a tilted, spinning disk of purple light round a black centre that
   follows the pointer and pulls loose dust in; hold the mouse button to pull harder, click to make it flare out.
   The far side of the disk is bent over the top of the hole into a bright arch, with a glow round the hole.
-  Also in the Home background switcher on the dev server.
-- Northern lights background (Shop, Epic): green ribbons sweeping over a night sky with stars, a black mountain
-  range and a lake that reflects it all; the lights brighten towards the pointer and a click sends a pulse along them.
+- Northern lights background (Shop, Epic): two great U-shaped ribbons and five more running away to one glowing
+  point on the horizon, over a night sky with stars, rocky black mountains (a darker range behind) and a lake whose
+  reflection ripples; the lights brighten towards the pointer and a click sends a pulse along them. Runs at a steady
+  30 frames per second.
+- Shop: background skins play their real effect in their thumbnails while they are on screen (paused while a
+  preview is open; a still sketch with Reduce motion).
+- Home's background is plain until one is picked.
 - Black hole and Northern lights need a dark sky: in the light theme Home turns its page dark for them and keeps its
   cards white.
 
@@ -47,6 +51,12 @@ Newest first. Each release is a GitHub release with the Windows installer; todoe
 
 ### Docs
 - Project map (`docs/PROJECT_MAP.md`), this changelog, and a mobile app plan (`docs/MOBILE_PLAN.md`).
+
+## 0.2.7 — 2026-10-31
+
+### Changed
+- New app icon and logo (an orbit and a star).
+- The privacy policy is a static page, so it loads without the app.
 
 ## 0.2.6 — 2026-10-31
 
