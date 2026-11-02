@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from 'react';
 
 /**
- * Home's background effects, the start of the shop's "background" category. For now one is picked with a
- * switcher that only appears on the local dev server (HomeView), to compare them; the choice is kept per device.
+ * Home's background effects, the start of the shop's "background" category. Plain until one is picked (the
+ * shop will set it); the choice is kept per device.
  */
 export type HomeBackground = 'field' | 'field-todoease' | 'lines' | 'chroma' | 'blackhole' | 'aurora' | 'dots' | 'dots-full' | 'plain';
 
@@ -19,7 +19,7 @@ export const HOME_BACKGROUNDS: { id: HomeBackground; label: string }[] = [
 ];
 
 const STORAGE_KEY = 'todoease.homeBackground';
-const DEFAULT: HomeBackground = 'field';
+const DEFAULT: HomeBackground = 'plain';
 const listeners = new Set<() => void>();
 
 function read(): HomeBackground {

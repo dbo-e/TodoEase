@@ -8174,6 +8174,21 @@ body.is-resizing-span * {
     var(--bg);
 }
 
+/* A background effect running for real in its card: the CSS sketch steps aside (the dot trail keeps its dot grid,
+   which the live effect lights up; the dark ones keep their dark sky). */
+.shop-preview.is-live::before,
+.shop-preview.is-live::after {
+  display: none;
+}
+
+.shop-preview.is-live[data-preview='bg-lines'] {
+  background: var(--bg);
+}
+
+.shop-preview.is-live[data-preview='bg-dots'] {
+  background: radial-gradient(circle at center, var(--dot-color) 1.1px, transparent 1.8px) 0 0 / 14px 14px, var(--bg);
+}
+
 /* Northern lights: green and teal curtains with fine rays over a night sky, above dark hills. */
 .shop-preview[data-preview='bg-aurora'] {
   background:
@@ -8699,8 +8714,7 @@ body.is-resizing-span * {
 
 .view-home[data-space] .home-bar .wordmark,
 .view-home[data-space] .home-bar .profile-btn,
-.view-home[data-space] .home-head,
-.view-home[data-space] > .home-bg-switcher {
+.view-home[data-space] .home-head {
   --text: #e8e8e8;
   --text-muted: #9c9c9c;
   --border: #3a3a3a;
@@ -8819,33 +8833,6 @@ body.is-resizing-span * {
 
 .view-home > .home-word-input::selection {
   background: transparent;
-}
-
-/* ---- Dev-only background switcher (bottom right; beats the page's own stacking rule for its children) ---- */
-.view-home > .home-bg-switcher {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 8px 6px 12px;
-  border: 1px dashed var(--border);
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
-  color: var(--text-muted);
-  font-size: 12px;
-  backdrop-filter: blur(6px);
-}
-
-.home-bg-switcher select {
-  padding: 4px 6px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg);
-  color: var(--text);
-  font: inherit;
 }
 
 /* ---- Page content: centred and capped so wide monitors do not stretch it ---- */

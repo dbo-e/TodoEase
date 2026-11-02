@@ -227,7 +227,7 @@ function Shop({ points, section, onOpenSection }: { points: number; section?: Sh
             )}
             <ul className="shop-grid">
               {(more ? items.slice(0, SECTION_PREVIEW) : items).map((item) => (
-                <ShopCard key={item.id} item={item} points={points} onOpen={() => setPreviewId(item.id)} />
+                <ShopCard key={item.id} item={item} points={points} onOpen={() => setPreviewId(item.id)} live={!previewItem} />
               ))}
               {more > 0 && (
                 <li className="shop-more">
@@ -248,11 +248,31 @@ function Shop({ points, section, onOpenSection }: { points: number; section?: Sh
   );
 }
 
-function ShopCard({ item, points, onOpen }: { item: ShopItem; points: number; onOpen: () => void }) {
+/** The Home page's own background effects, by shop item, to run in a preview (a card or the preview dialog). */
+function liveBackground(id: string): ReactNode {
+  switch (id) {
+    case 'bg-dots':
+      return <DotTrail className="home-field" />;
+    case 'bg-field':
+      return <AsciiField word="TodoEase" className="home-field" />;
+    case 'bg-lines':
+      return <LineField word="TodoEase" className="home-field" />;
+    case 'bg-chroma':
+      return <ChromaTrail word="TodoEase" className="home-field" />;
+    case 'bg-blackhole':
+      return <BlackHole className="home-field" />;
+    case 'bg-aurora':
+      return <Aurora className="home-field" />;
+    default:
+      return null;
+  }
+}
+
+function ShopCard({ item, points, onOpen, live }: { item: ShopItem; points: number; onOpen: () => void; live: boolean }) {
   const tier = item.tier ? SHOP_TIERS[item.tier] : null;
   return (
     <li className={`shop-item ${item.tier ? `tier-${item.tier}` : 'is-included'}`}>
-      <ShopPreview item={item} />
+      <ShopPreview item={item} live={live} />
       <div className="shop-item-body">
         <div className="shop-item-head">
           {/* The name's button covers the whole card (styles.css, .shop-item-open), so a click anywhere opens the preview. */}
@@ -312,14 +332,6 @@ function SkinPreviewDialog({ item, points, onStep, onClose }: { item: ShopItem; 
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  const live: Partial<Record<string, ReactNode>> = {
-    'bg-dots': <DotTrail className="home-field" />,
-    'bg-field': <AsciiField word="TodoEase" className="home-field" />,
-    'bg-lines': <LineField word="TodoEase" className="home-field" />,
-    'bg-chroma': <ChromaTrail word="TodoEase" className="home-field" />,
-    'bg-blackhole': <BlackHole className="home-field" />,
-    'bg-aurora': <Aurora className="home-field" />,
-  };
   const hint =
     item.id === 'bg-plain'
       ? t('No effect: the Home page stays calm.')
@@ -338,7 +350,7 @@ function SkinPreviewDialog({ item, points, onStep, onClose }: { item: ShopItem; 
       <div className="skin-stage" data-preview={item.id}>
         {item.category === 'background' ? (
           <div className="skin-stage-live" key={item.id}>
-            {live[item.id]}
+            {liveBackground(item.id)}
           </div>
         ) : (
           <div className="skin-stage-sketch">
@@ -376,8 +388,23 @@ function SkinPreviewDialog({ item, points, onStep, onClose }: { item: ShopItem; 
   );
 }
 
-/** A small picture of the skin: a sketch of the part of the app it changes, drawn in CSS (styles.css, .shop-preview). */
-function ShopPreview({ item }: { item: ShopItem }) {
+/**
+ * A small picture of the skin: a sketch of the part of the app it changes, drawn in CSS (styles.css, .shop-preview).
+ * A background effect runs for real instead (`live`), but only while its card is on screen, and not with Reduce
+ * motion; the sketch stays underneath for the moment before it starts.
+ */
+function ShopPreview({ item, live = false }: { item: ShopItem; live?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [onScreen, setOnScreen] = useState(false);
+  const canRun = live && item.category === 'background' && liveBackground(item.id) !== null;
+  useEffect(() => {
+    const el = ref.current;
+    if (!canRun || !el || typeof IntersectionObserver === 'undefined') return;
+    const watch = new IntersectionObserver(([entry]) => setOnScreen(entry.isIntersecting));
+    watch.observe(el);
+    return () => watch.disconnect();
+  }, [canRun]);
+  const running = canRun && onScreen && !motionReduced();
   const sketch: Record<ShopCategoryId, ReactNode> = {
     background: null,
     tab: (
@@ -415,8 +442,8 @@ function ShopPreview({ item }: { item: ShopItem }) {
     bundle: <span className="shop-mock-avatar" />,
   };
   return (
-    <div className="shop-preview" data-preview={item.id} aria-hidden="true">
-      {sketch[item.category]}
+    <div ref={ref} className={`shop-preview ${running ? 'is-live' : ''}`} data-preview={item.id} aria-hidden="true">
+      {running ? liveBackground(item.id) : sketch[item.category]}
     </div>
   );
 }

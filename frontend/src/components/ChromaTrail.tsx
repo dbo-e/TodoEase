@@ -431,7 +431,7 @@ export function ChromaTrail({ className, word = 'TodoEase', below }: { className
     const onClick = (event: MouseEvent) => {
       if (motionReduced() || event.button !== 0) return;
       const el = event.target instanceof Element ? event.target : null;
-      if (el?.closest('a, button, input, select, textarea, label, summary, [role="button"], [role="menuitem"], [contenteditable="true"], .home-card, .home-bg-switcher')) return;
+      if (el?.closest('a, button, input, select, textarea, label, summary, [role="button"], [role="menuitem"], [contenteditable="true"], .home-card')) return;
       window.clearTimeout(firstWord);
       if (following) {
         startWriting();

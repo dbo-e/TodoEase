@@ -2,7 +2,7 @@ import { ArrowRight, BookOpen, CalendarDays, CircleCheckBig, Clock3, Wallet } fr
 import { useRef, useState, type ReactNode } from 'react';
 import type { Note, Task } from '../api/types';
 import { todayStr } from '../lib/dates';
-import { HOME_BACKGROUNDS, LINE_WORD_MAX, setHomeBackground, setLineWord, useHomeBackground, useLineWord, type HomeBackground } from '../lib/homeBackground';
+import { LINE_WORD_MAX, setLineWord, useHomeBackground, useLineWord } from '../lib/homeBackground';
 import { useResolvedTheme, type ThemePreference } from '../lib/theme';
 import type { View } from '../lib/views';
 import { ProfileMenu } from './AccountMenu';
@@ -160,7 +160,6 @@ export function HomeView({
           }}
         />
       )}
-      {import.meta.env.DEV && <BackgroundSwitcher value={background} />}
 
       <div className="home-page">
       {/* No feature sidebar here: just the logo and the profile menu (Settings, theme, account). */}
@@ -222,21 +221,3 @@ function FeatureBody({ feature }: { feature: Feature }) {
   );
 }
 
-/**
- * Development only (never in a build): pick Home's background to compare the effects. To be replaced by the
- * shop's background category.
- */
-function BackgroundSwitcher({ value }: { value: HomeBackground }) {
-  return (
-    <label className="home-bg-switcher">
-      <span>Background (dev)</span>
-      <select value={value} onChange={(e) => setHomeBackground(e.target.value as HomeBackground)}>
-        {HOME_BACKGROUNDS.map((b) => (
-          <option key={b.id} value={b.id}>
-            {b.label}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
-}

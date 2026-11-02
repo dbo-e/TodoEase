@@ -448,7 +448,7 @@ export function BlackHole({ className, below }: { className?: string; below?: st
       return (
         event.button === 0 &&
         !!inside(event) &&
-        !el?.closest('a, button, input, select, textarea, label, summary, [role="button"], [role="menuitem"], [contenteditable="true"], .home-card, .home-bg-switcher')
+        !el?.closest('a, button, input, select, textarea, label, summary, [role="button"], [role="menuitem"], [contenteditable="true"], .home-card')
       );
     };
     const onDown = (event: PointerEvent) => {
